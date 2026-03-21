@@ -1,124 +1,135 @@
-import React, { useState } from 'react';
+// import React from 'react';
+// const NameList = () => {
+//   const names = ["An", "Bình", "Chi"];
 
-export default function LuuTru() {
-  const [count, setCount] = useState(0); 
-  const [HienThi, setHienThi] = useState(false); 
-  const [NoiDung, setNoiDung] = useState(''); 
-  const [DanhSach, setDanhSach] = useState([]); 
-  const [Ten, setTen] = useState(''); 
-  const [Tuoi, setTuoi] = useState(''); 
+//   return (
+//     <ul>
+//       {names.map((name, index) => (
+//         <li key={index}>{name}</li>
+//       ))}
+//     </ul>
+//   );
+// };
+// export default NameList;
 
-  // BÀI 1
-  function Tang() {
-    setCount(count + 1);
-  }
 
-  function Giam() {
-    if (count > 0) { 
-      setCount(count - 1); 
-    }
-  }
 
-  // BÀI 2
-  function ThayDoiTrangThai() {
-    setHienThi(!HienThi);
-  }
 
-  // BÀI 3
-  function XuLyNhapLieu(event) {
-    setNoiDung(event.target.value);
-  }
 
-  // BÀI 4
-  function ThemSV(event) {
-    event.preventDefault();
-    if (Ten !== '' && Tuoi !== '') {
-      const SVmoi = { 
-        id: Date.now(), 
-        tenSV: Ten, 
-        tuoiSV: Tuoi 
-      };
-      setDanhSach([...DanhSach, SVmoi]);
-      setTen('');
-      setTuoi('');
-    }
-  }
 
-  // BÀI 5
-  function XoaSV(idCanXoa) {
-    const MangMoi = DanhSach.filter(function(item) {
-      return item.id !== idCanXoa;
-    });
-    setDanhSach(MangMoi);
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Bài 2
+// import React from 'react';
+
+// const ProductList = () => {
+//   const products = [
+//     { id: 1, name: "Book", price: 80 },
+//     { id: 2, name: "Pen", price: 20 }
+//   ];
+
+//   return (
+//     <ul>
+//       {products.map(product => (
+//         <li key={product.id}>
+//           {product.name} - Giá: {product.price}
+//         </li>
+//       ))}
+//     </ul>
+//   );
+// };
+
+// export default ProductList;
+
+
+
+
+
+
+
+
+// Bài 3
+// import React from 'react';
+
+// const ProductCards = () => {
+//   const products = [
+//     { id: 1, name: "Book", price: 80 },
+//     { id: 2, name: "Pen", price: 20 }
+//   ];
+
+//   return (
+//     <div>
+//       {products.map(product => (
+//         <div className="card" key={product.id}>
+//           <h4>{product.name}</h4>
+//           <p>Giá: {product.price}</p>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
+
+// export default ProductCards;
+
+
+
+
+
+
+
+
+// Bài 4
+import React from 'react';
+
+const FilteredProducts = () => {
+  // Dữ liệu giả lập 10 sản phẩm
+  const products = [
+    { id: 1, name: "Book", price: 80 },
+    { id: 2, name: "Pen", price: 20 },
+    { id: 3, name: "Pencil", price: 10 },
+    { id: 4, name: "Backpack", price: 150 },
+    { id: 5, name: "Eraser", price: 5 },
+    { id: 6, name: "Ruler", price: 15 },
+    { id: 7, name: "Notebook", price: 55 },
+    { id: 8, name: "Marker", price: 60 },
+    { id: 9, name: "Stapler", price: 45 },
+    { id: 10, name: "Calculator", price: 200 }
+  ];
+
+  // Lọc các sản phẩm có giá >= 50
+  const expensiveProducts = products.filter(product => product.price >= 50);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '20px'}}>
-      
-      {/* BÀI 1: Counter */}
-      <div style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '10px', width: '350px' }}>
-        <h2>Bài 1: Counter</h2>
-        <p>Giá trị ban đầu = 0: {count}</p> 
-        <button onClick={Tang}>Tăng (+)</button>
-        <button onClick={Giam} style={{ marginLeft: '5px' }}>Giảm (-)</button>
-      </div>
-
-      {/* BÀI 2: Toggle nội dung */}
-      <div style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '10px', width: '350px' }}>
-        <h2>Bài 2: Toggle nội dung</h2>
-        <button onClick={ThayDoiTrangThai}>Show/Hide</button> 
-        {HienThi === true && <p>Welcome to ReactJS Test</p>} 
-      </div>
-
-      {/* BÀI 3: Input Realtime */}
-      <div style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '10px', width: '350px' }}>
-        <h2>Bài 3: Input realtime</h2>
-        <input 
-          type="text" 
-          onChange={XuLyNhapLieu} 
-          value={NoiDung} 
-          placeholder="Gõ gì đó..." 
-        />
-        <p>You typed: {NoiDung}</p>
-      </div>
-
-      {/* BÀI 4 & 5: Quản lý sinh viên */}
-      <div style={{ border: '1px solid #ccc', padding: '15px', width: '350px' }}>
-        <h2>Bài 4 & 5: Quản lý sinh viên</h2>
-        <form onSubmit={ThemSV}>
-          <input 
-            placeholder="Tên" 
-            value={Ten} 
-            onChange={function(e){ setTen(e.target.value) }} 
-            style={{ marginBottom: '5px', display: 'block' }}
-          />
-          <input 
-            placeholder="Tuổi" 
-            value={Tuoi} 
-            type="number" 
-            onChange={function(e){ setTuoi(e.target.value) }} 
-            style={{ marginBottom: '5px', display: 'block' }}
-          />
-          <button type="submit">Add</button>
-        </form>
-
-        <ul style={{ marginTop: '15px' }}>
-          {DanhSach.map(function(sv) {
-            return (
-              <li key={sv.id} style={{ marginBottom: '5px' }}>
-                {sv.tenSV} – {sv.tuoiSV}
-                <button 
-                  onClick={function(){ XoaSV(sv.id) }} 
-                  style={{ marginLeft: '10px', color: 'red' }}
-                >
-                  Delete
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-
+    <div>
+      <h3>{"Sản phẩm có giá >= 50:"}</h3>
+      <ul>
+        {expensiveProducts.map(product => (
+          <li key={product.id}>
+            {product.name} - Giá: {product.price}
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
+
+export default FilteredProducts;
