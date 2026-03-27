@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './bt.css'; // <--- Nhớ import file CSS bạn vừa tạo
+import './bt.css'; 
 
 const ShoppingCartApp = () => {
   const [products] = useState([
@@ -18,7 +18,7 @@ const ShoppingCartApp = () => {
   <div className="container-main">
     <header className="shop-header">
       <h2>Cửa hàng Online</h2>
-      <div className="cart-status">🛒 Giỏ hàng: {cart.length}</div>
+      <div className="cart-status">Giỏ hàng: {cart.length}</div>
     </header>
 
     <div className="product-grid">
