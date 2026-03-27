@@ -10,9 +10,9 @@ const QuantityApp = () => {
 
   const [cart, setCart] = useState([]);
 
+  // 1. Thêm hoặc Tăng số lượng
   const handleAddToCart = (product) => {
     const isExist = cart.find((item) => item.id === product.id);
-
     if (isExist) {
       setCart(cart.map((item) => 
         item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
@@ -22,27 +22,44 @@ const QuantityApp = () => {
     }
   };
 
-  // Hàm giảm số lượng
+  // 2. Giảm số lượng - Nếu đang là 1 mà giảm tiếp thì Xóa
   const handleDecrease = (id) => {
-    setCart(cart.map((item) => 
-      (item.id === id && item.quantity > 1) 
-      ? { ...item, quantity: item.quantity - 1 } 
-      : item
-    ));
+    const targetItem = cart.find(item => item.id === id);
+    
+    if (targetItem.quantity > 1) {
+      setCart(cart.map((item) => 
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+      ));
+    } else {
+      // Nếu quantity bằng 1, thực hiện xóa luôn
+      handleRemove(id);
+    }
   };
 
-  // Hàm xóa sản phẩm khỏi giỏ
+  // 3. Cho phép khách tự nhập số lượng
+  const handleInputChange = (id, value) => {
+    const newQuantity = parseInt(value);
+    
+    if (isNaN(newQuantity) || newQuantity <= 0) {
+      // Nếu nhập bậy hoặc bằng 0 thì xóa khỏi giỏ
+      handleRemove(id);
+    } else {
+      setCart(cart.map((item) => 
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      ));
+    }
+  };
+
   const handleRemove = (id) => {
     setCart(cart.filter((item) => item.id !== id));
   };
 
-  // Tính tổng tiền
   const totalPrice = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
 
   return (
     <div className="container-main">
       <header className="shop-header">
-        <h2>Quản lý số lượng</h2>
+        <h2>Quản lý giỏ hàng nâng cao</h2>
         <div className="cart-status">🛒 {cart.length} loại hàng</div>
       </header>
 
@@ -61,21 +78,48 @@ const QuantityApp = () => {
 
       <div className="cart-info">
         <h3>Giỏ hàng của bạn</h3>
-        {cart.length === 0 ? <p>Chưa có sản stone nào.</p> : (
+        {cart.length === 0 ? <p>Chưa có sản phẩm nào.</p> : (
           <div>
-            {cart.map((item) => (
-              <div key={item.id} className="cart-item">
-                <span>{item.name} ({item.price.toLocaleString()}đ)</span>
-                <div>
-                  <button onClick={() => handleDecrease(item.id)} style={btnSmall}>-</button>
-                  <span style={{ margin: '0 10px', fontWeight: 'bold' }}>{item.quantity}</span>
-                  <button onClick={() => handleAddToCart(item)} style={btnSmall}>+</button>
-                  <button onClick={() => handleRemove(item.id)} style={btnDel}>Xóa</button>
-                </div>
-              </div>
-            ))}
-            <h4 style={{ textAlign: 'right', marginTop: '20px', color: 'red' }}>
-              Tổng thanh toán: {totalPrice.toLocaleString()} VNĐ
+            <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid #ccc' }}>
+                  <th>Sản phẩm</th>
+                  <th>Đơn giá</th>
+                  <th>Số lượng</th>
+                  <th>Thành tiền</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {cart.map((item) => (
+                  <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
+                    <td style={{ padding: '10px 0' }}>{item.name}</td>
+                    <td>{item.price.toLocaleString()}đ</td>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <button onClick={() => handleDecrease(item.id)} style={btnSmall}>-</button>
+                        <input 
+                          type="number" 
+                          value={item.quantity} 
+                          onChange={(e) => handleInputChange(item.id, e.target.value)}
+                          style={inputStyle}
+                        />
+                        <button onClick={() => handleAddToCart(item)} style={btnSmall}>+</button>
+                      </div>
+                    </td>
+                    <td style={{ fontWeight: 'bold' }}>
+                      {(item.price * item.quantity).toLocaleString()}đ
+                    </td>
+                    <td>
+                      <button onClick={() => handleRemove(item.id)} style={btnDel}>Xóa</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            
+            <h4 style={{ textAlign: 'right', marginTop: '20px', color: 'red', fontSize: '1.2rem' }}>
+              Tổng cộng thanh toán: {totalPrice.toLocaleString()} VNĐ
             </h4>
           </div>
         )}
@@ -83,7 +127,9 @@ const QuantityApp = () => {
     </div>
   );
 };
-const btnSmall = { width: '30px', cursor: 'pointer', border: '1px solid #ddd' };
-const btnDel = { marginLeft: '20px', color: 'red', border: 'none', background: 'none', cursor: 'pointer' };
+
+const btnSmall = { width: '25px', height: '25px', cursor: 'pointer', border: '1px solid #ddd', background: '#f9f9f9' };
+const btnDel = { color: 'red', border: 'none', background: 'none', cursor: 'pointer', fontWeight: 'bold' };
+const inputStyle = { width: '40px', textAlign: 'center', margin: '0 5px', border: '1px solid #ddd', borderRadius: '4px' };
 
 export default QuantityApp;
