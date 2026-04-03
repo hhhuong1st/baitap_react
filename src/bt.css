@@ -111,3 +111,94 @@ h1{
   display: flex;
   justify-content: space-between;
 }
+
+/* Container chính */
+.product-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* BT6 */
+.product-card {
+  width: 180px;
+  padding: 15px;
+  border-radius: 12px;
+}
+
+.product-card.normal {
+  border: 1px solid #ddd;
+  background-color: #ffffff;
+  
+}
+
+.product-card.active {
+  border: 2px solid green;
+}
+
+.product-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  width: 150px;
+}
+
+/* Nhãn trạng thái dùng chung */
+.status-label {
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Màu riêng cho từng trạng thái */
+.con-hang { background-color: #2ecc71; } /* Xanh lá */
+.het-hang { background-color: #e74c3c; } /* Đỏ */
+
+.btn-toggle {
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+/* bài 10 */
+/* Mặc định Chế độ Sáng */
+.container {
+  min-height: 100vh;
+  padding: 20px;
+  background-color: white;
+  color: black;
+  transition: 0.3s; /* Hiệu ứng đổi màu mượt */
+}
+
+.card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+/* Khi có class .dark thì đổi màu ngược lại */
+.dark {
+  background-color: #222; /* Nền tối */
+  color: white;           /* Chữ trắng */
+}
+
+.dark .card {
+  border-color: #555;     /* Viền tối hơn */
+  background-color: #333; /* Nền thẻ tối */
+}
+
+.btn-mode {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid #888;
+}
