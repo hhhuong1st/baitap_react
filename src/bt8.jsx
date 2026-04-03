@@ -8,7 +8,7 @@ const DanhSachGioHang = () => {
     { id: 3, ten: "Sạc dự phòng 20W", daThem: true },
   ]);
 
-  const handleThemGioHang = (idCanSua) => {
+  const xuLyThemGioHang = (idCanSua) => {
     const mangMoi = danhSachHang.map((item) => {
       if (item.id === idCanSua) {
         return { ...item, daThem: !item.daThem };
@@ -25,7 +25,7 @@ const DanhSachGioHang = () => {
           <h3>{sp.ten}</h3>
           
           <button
-            onClick={() => handleThemGioHang(sp.id)}
+            onClick={() => xuLyThemGioHang(sp.id)}
             className={`btn-cart ${sp.daThem ? 'btn-added' : 'btn-none'}`}
           >
             {sp.daThem ? '✅ Đã thêm' : '🛒 Thêm vào giỏ'}

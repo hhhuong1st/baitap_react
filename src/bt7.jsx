@@ -12,7 +12,6 @@ const DanhSachKhoHang = () => {
   const daoTrangThaiKho = (idCanTim) => {
     const mangMoiCapNhat = danhSachHang.map((monHang) => {
       if (monHang.id === idCanTim) {
-
         return { ...monHang, conHang: !monHang.conHang };
       }
       return monHang;

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './bt.css'; 
 
 const ShopDarkMode = () => {
-  // 1. State: true là Dark Mode, false là Light Mode
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const danhSachHang = [
@@ -11,14 +10,11 @@ const ShopDarkMode = () => {
   ];
 
   return (
-    /* 2. Dán class động vào thẻ bao ngoài cùng của toàn bộ trang */
     <div className={`shop-container ${isDarkMode ? 'dark' : 'light'}`}>
       
       <header className="shop-header">
-        <h2>Cửa hàng Công nghệ</h2>
-        {/* 3. Nút bấm để chuyển đổi chế độ */}
         <button className="btn-toggle" onClick={() => setIsDarkMode(!isDarkMode)}>
-          {isDarkMode ? '☀️ Chế độ sáng' : '🌙 Chế độ tối'}
+          {isDarkMode ? 'Chế độ sáng' : 'Chế độ tối'}
         </button>
       </header>
 
