@@ -8,7 +8,7 @@
 // import Bt8 from './bt8';
 // import Bt9 from './bt9';
 // import Bt10 from './bt10';
-import Test from './an_hien_component';
+import Test from './test_2';
 function App() {
   return (
     <div>
