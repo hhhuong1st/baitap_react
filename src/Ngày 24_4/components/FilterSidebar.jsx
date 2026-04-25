@@ -1,4 +1,5 @@
 import React from 'react';
+import hahaGif from '../../haha.gif';
 
 const FilterSidebar = React.memo(({ categories, selectedCategory, onSelectCategory }) => {
   console.log("Rendering FilterSidebar");
@@ -20,6 +21,20 @@ const FilterSidebar = React.memo(({ categories, selectedCategory, onSelectCatego
           {cat}
         </button>
       ))}
+
+      <div style={{ marginTop: '40px', textAlign: 'center' }}>
+        <img 
+          src={hahaGif} 
+          alt="fun-gif" 
+          style={{ 
+            width: '100%',
+            maxWidth: '200px',
+            borderRadius: '12px', 
+            boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+          }} 
+        />
+      </div>
+
     </div>
   );
 });

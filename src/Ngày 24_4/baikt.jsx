@@ -1,26 +1,63 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import productsData from './products.json';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import './shop.css';
-
 import SearchBar from './components/SearchBar';
 import FilterSidebar from './components/FilterSidebar';
-import ProductList from './components/ProductList';
 import Cart from './components/Cart';
 
 const MiniShop = () => {
-  console.log("Rendering MiniShop (Main Container)");
+  console.log("Rendering MiniShop");
+
+  const [productsData, setProductsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [ProductListComponent, setProductListComponent] = useState(null);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+
   const [cartItems, setCartItems] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+
   const [showWishlistOnly, setShowWishlistOnly] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+
+        const response = await import('./products.json');
+        const data = response.default || response;
+
+        setTimeout(() => {
+          setProductsData(data);
+          setIsLoading(false);
+        }, 1000);
+
+      } catch (error) {
+        console.error("Lỗi khi gọi API sản phẩm:", error);
+        setIsLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    const loadComponent = async () => {
+      try {
+        const module = await import('./components/ProductList');
+
+        setProductListComponent(() => module.default);
+      } catch (error) {
+        console.error("Lỗi khi lấy Component ProductList: ", error);
+      }
+    };
+    loadComponent();
+  }, []);
 
   const categories = useMemo(() => {
     const cats = new Set(productsData.map(p => p.category));
     return Array.from(cats);
-  }, []);
+  }, [productsData]);
 
   const filteredProducts = useMemo(() => {
     return productsData.filter(p => {
@@ -29,19 +66,16 @@ const MiniShop = () => {
       const matchWishlist = showWishlistOnly ? wishlist.includes(p.id) : true;
       return matchCategory && matchSearch && matchWishlist;
     });
-  }, [searchQuery, selectedCategory, showWishlistOnly, wishlist]);
+  }, [productsData, searchQuery, selectedCategory, showWishlistOnly, wishlist]);
 
-  // useCallback 1
   const handleSearchChange = useCallback((query) => {
     setSearchQuery(query);
   }, []);
 
-  // useCallback 2
   const handleCategorySelect = useCallback((category) => {
     setSelectedCategory(category);
   }, []);
 
-  // useCallback 3
   const handleAddToCart = useCallback((product) => {
     setCartItems(prev => {
       const existing = prev.find(item => item.id === product.id);
@@ -54,7 +88,6 @@ const MiniShop = () => {
     });
   }, []);
 
-  // useCallback 4
   const handleUpdateCartQuantity = useCallback((id, delta) => {
     setCartItems(prev => prev.map(item => {
       if (item.id === id) {
@@ -64,7 +97,6 @@ const MiniShop = () => {
     }).filter(item => item.quantity > 0));
   }, []);
 
-  // useCallback 5
   const handleToggleWishlist = useCallback((productId) => {
     setWishlist(prev => {
       if (prev.includes(productId)) {
@@ -79,7 +111,8 @@ const MiniShop = () => {
   return (
     <div className="minishop-container">
       <header className="minishop-header">
-        <h1 className="minishop-logo">MiniShop</h1>
+        <h1 className="minishop-logo">HƯƠNG</h1>
+
         <SearchBar
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
@@ -106,12 +139,18 @@ const MiniShop = () => {
           onSelectCategory={handleCategorySelect}
         />
         <div className="minishop-content">
-          <ProductList
-            products={filteredProducts}
-            onAddToCart={handleAddToCart}
-            wishlist={wishlist}
-            onToggleWishlist={handleToggleWishlist}
-          />
+          {isLoading || !ProductListComponent ? (
+            <div style={{ textAlign: 'center', padding: '50px', fontSize: '1.2rem', color: '#ff69b4', fontWeight: 'bold' }}>
+              Đang tải...
+            </div>
+          ) : (
+            <ProductListComponent
+              products={filteredProducts}
+              onAddToCart={handleAddToCart}
+              wishlist={wishlist}
+              onToggleWishlist={handleToggleWishlist}
+            />
+          )}
         </div>
       </main>
 
